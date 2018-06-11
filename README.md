@@ -21,8 +21,8 @@ If this were a graded assignment, your grade will depend heavily on the *design*
 To successfully execute the tests, **you will need to create** three additional directories:
 
 - `results` - This is where the test suite will save the results produced by your code. You must create this directory manually.
--  `input` - Download and unzip this directory from [http://www.cs.usfca.edu/~srollins/cs601/input.zip](http://www.cs.usfca.edu/~srollins/cs601/input.zip). This directory contains all of the input files required by the test suite. Do not alter any of the files in this directory.
--  `output` - Download and unzip this directory from [http://www.cs.usfca.edu/~srollins/cs601/output.zip](http://www.cs.usfca.edu/~srollins/cs601/output.zip). This directory contains the output that your results will be compared against. Do not alter any of the files in this directory.
+-  `input` - Download and unzip the directory from [http://www.cs.usfca.edu/~srollins/cs601/input.zip](http://www.cs.usfca.edu/~srollins/cs601/input.zip). This directory contains all of the input files required by the test suite. Do not alter any of the files in this directory.
+-  `output` - Download and unzip the directory from [http://www.cs.usfca.edu/~srollins/cs601/output.zip](http://www.cs.usfca.edu/~srollins/cs601/output.zip). This directory contains the output that your results will be compared against. Do not alter any of the files in this directory.
 
 ### Requirements
 
@@ -42,7 +42,7 @@ Refer to the guide for [setting up your development environment](https://github.
 
 ### Submission Requirements
 
-1. Use the following link to create your private github repository for this assignment. The repository will be seeded with the skeleton code, test cases, and input files. [Yelp Practice]()
+1. Use the following link to create your private github repository for this assignment. The repository will be seeded with the skeleton code, test cases, and input files. [Yelp Practice](https://classroom.github.com/a/OakTxoPn)
 2. For full credit, make sure to follow all [Style Guidelines](https://github.com/CS601-F18/notes/blob/master/admin/style.md). Points will be deducted for each violation.
 
 ### Grading Rubric
