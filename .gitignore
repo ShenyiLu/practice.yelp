@@ -1,0 +1,7 @@
+/target/
+/input/
+/output/
+/results/
+/.classpath
+/.gitignore~
+/.project
