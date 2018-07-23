@@ -2,6 +2,8 @@ package practice.data;
 import java.nio.file.Path;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import java.text.SimpleDateFormat;
 
 /**
  * Data structure to store information about businesses, users, and reviews.
@@ -10,13 +12,17 @@ import com.google.gson.JsonArray;
 public class YelpStore {
 
 	// TODO: Define data members here.
-	 
+	JsonArray businessArray;
+	JsonArray userArray;
+	JsonArray reviewArray;
 	
 	/**
 	 * Constructor. Create an empty YelpStore.
 	 */
 	public YelpStore() {
-		//REPLACE WITH YOUR CODE.
+		businessArray = new JsonArray();
+		userArray = new JsonArray();
+		reviewArray = new JsonArray();
 	}
 
 	/**
@@ -30,8 +36,31 @@ public class YelpStore {
 	 */
 	public boolean addReview(String businessId, int rating, String review, String date, String userId) {
 
-		//REPLACE WITH YOUR CODE.
-		return false;
+		// check rating range
+		if (rating < 1 || rating > 5){
+			return false;
+		}
+		// check date
+		if (date.length() != 10){
+			return false;
+		}
+
+		try {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(date);
+		} catch (IllegalArgumentException iae) {
+			return false;
+		}
+
+		// add new review
+		JsonObject newReview = new JsonObject();
+		newReview.addProperty("businessId", businessId);
+		newReview.addProperty("rating", rating);
+		newReview.addProperty("review", review);
+		newReview.addProperty("date", date);
+		newReview.addProperty("userId", userId);
+
+		reviewArray.add(newReview);
+		return true;
 	}
 
 	/**
@@ -45,8 +74,16 @@ public class YelpStore {
 	 * @return true if successful.
 	 */
 	public boolean addBusiness(String businessId, String name, String city, String state, double lat, double lon) {
-		//REPLACE WITH YOUR CODE.
-		return false;
+		JsonObject newReview = new JsonObject();
+		newReview.addProperty("businessId", businessId);
+		newReview.addProperty("name", name);
+		newReview.addProperty("city", city);
+		newReview.addProperty("state", state);
+		newReview.addProperty("lat", lat);
+		newReview.addProperty("lon", lon);
+
+		businessArray.add(newReview);
+		return true;
 	}
 
 	/**
@@ -62,8 +99,17 @@ public class YelpStore {
 	 */
 	public boolean addBusiness(String businessId, String name, String city, String state, double lat, double lon, JsonArray neighborhoods) {
 
-		//REPLACE WITH YOUR CODE.
-		return false;
+		JsonObject newReview = new JsonObject();
+		newReview.addProperty("businessId", businessId);
+		newReview.addProperty("name", name);
+		newReview.addProperty("city", city);
+		newReview.addProperty("state", state);
+		newReview.addProperty("lat", lat);
+		newReview.addProperty("lon", lon);
+		newReview.add("neighborhoods", neighborhoods);
+
+		businessArray.add(newReview);
+		return true;
 	}
 
 	/**
@@ -78,8 +124,23 @@ public class YelpStore {
 	 * @return true if successful.
 	 */
 	public boolean addBusiness(String businessId, String name, String city, String state, double lat, double lon, String neighborhoods) {
-		//REPLACE WITH YOUR CODE.
-		return false;
+		JsonObject newReview = new JsonObject();
+		newReview.addProperty("businessId", businessId);
+		newReview.addProperty("name", name);
+		newReview.addProperty("city", city);
+		newReview.addProperty("state", state);
+		newReview.addProperty("lat", lat);
+		newReview.addProperty("lon", lon);
+		// parse neighborhoods string
+		String[] temp = neighborhoods.split(",");
+		JsonArray neighborhoodsArray = new JsonArray();
+		for(int i = 0; i < temp.length; i++) {
+			neighborhoodsArray.add(temp[i]);
+		}
+		newReview.add("neighborhoods", neighborhoodsArray);
+
+		businessArray.add(newReview);
+		return true;
 
 	}
 
@@ -91,8 +152,11 @@ public class YelpStore {
 	 * @return true if successful.
 	 */
 	public boolean addUser(String userId, String name) {
-		//REPLACE WITH YOUR CODE.
-		return false;
+		JsonObject newUser = new JsonObject();
+		newUser.addProperty("userId", userId);
+		newUser.addProperty("name", name);
+		userArray.add(newUser);
+		return true;
 	}
 
 	/**
