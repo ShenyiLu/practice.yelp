@@ -2,8 +2,12 @@ package practice.data;
 import java.nio.file.Path;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Data structure to store information about businesses, users, and reviews.
@@ -15,6 +19,7 @@ public class YelpStore {
 	JsonArray businessArray;
 	JsonArray userArray;
 	JsonArray reviewArray;
+	String pattern;
 	
 	/**
 	 * Constructor. Create an empty YelpStore.
@@ -23,6 +28,7 @@ public class YelpStore {
 		businessArray = new JsonArray();
 		userArray = new JsonArray();
 		reviewArray = new JsonArray();
+		pattern = "yyyy-MM-dd";
 	}
 
 	/**
@@ -46,8 +52,9 @@ public class YelpStore {
 		}
 
 		try {
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(date);
-		} catch (IllegalArgumentException iae) {
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			sdf.parse(date);
+		} catch (ParseException iae) {
 			return false;
 		}
 
@@ -175,8 +182,95 @@ public class YelpStore {
 	 * @return string representation of the data store
 	 */
 	public String toString() {
-		//REPLACE WITH YOUR CODE.
+		// Sort deepcopy of our array as needed
+		ArrayList<JsonObject> sortedBusinessArray = sortBusinessArray();
+		ArrayList<JsonObject> sortedReviewArray = sortReviewArray();
+
+
+
+		int businessIndex = 0;
+		int reviewIndex = 0;
 		return null;
+	}
+
+	// An ArrayList representation of business, sorted alphabetically
+	private ArrayList<JsonObject> sortBusinessArray(){
+		ArrayList<JsonObject> sortedBusinessArray = new ArrayList<JsonObject>();
+		for (int i = 0; i < businessArray.size(); i++) {
+			sortedBusinessArray.add(businessArray.get(i).getAsJsonObject());
+		}
+		Collections.sort(sortedBusinessArray, new BusinessComparator());
+		return sortedBusinessArray;
+	}
+
+	private ArrayList<JsonObject> sortReviewArray(){
+		ArrayList<JsonObject> sortedReviewArray = new ArrayList<JsonObject>();
+		for (int i = 0; i < reviewArray.size(); i++) {
+			sortedReviewArray.add(reviewArray.get(i).getAsJsonObject());
+		}
+		Collections.sort(sortedReviewArray, new ReviewComparator());
+		return sortedReviewArray;
+	}
+
+	// It might be better to use a map?
+	private HashMap<String, ArrayList> reviewMap(){
+
+		return null;
+	}
+
+	// comparator to sore business alphabetically
+	class BusinessComparator implements Comparator<JsonObject>{
+		public int compare(JsonObject business1, JsonObject business2){
+			String name1 = "";
+			String name2 = "";
+			try {
+				name1 = business1.getAsJsonPrimitive("businessId").getAsString();
+				name2 = business2.getAsJsonPrimitive("businessId").getAsString();
+			} catch (JsonIOException e){
+
+			}
+			return name1.compareTo(name2);
+		}
+	}
+
+	class ReviewComparator implements Comparator<JsonObject>{
+		public int compare(JsonObject review1, JsonObject review2){
+			String name1 = "";
+			String name2 = "";
+			try {
+				name1 = review1.getAsJsonPrimitive("businessId").getAsString();
+				name2 = review2.getAsJsonPrimitive("businessId").getAsString();
+			} catch (JsonIOException e){
+				System.out.println(e);
+				return 0;
+			}
+
+			if (!name1.equals(name2)){
+				return name1.compareTo(name2);
+			}
+
+			String date1 = "";
+			String date2 = "";
+			try {
+				date1 = review1.getAsJsonPrimitive("date").getAsString();
+				date2 = review2.getAsJsonPrimitive("date").getAsString();
+			} catch (JsonIOException e){
+				System.out.println(e);
+				return 0;
+			}
+
+			Date fdate1;
+			Date fdate2;
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				fdate1 = sdf.parse(date1);
+				fdate2 = sdf.parse(date2);
+			} catch (ParseException iae) {
+				System.out.println(iae);
+				return 0;
+			}
+			return fdate1.compareTo(fdate2);
+		}
 	}
 
 	/**
