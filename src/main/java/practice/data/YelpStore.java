@@ -20,6 +20,9 @@ public class YelpStore {
 	JsonArray userArray;
 	JsonArray reviewArray;
 	String pattern;
+
+	HashMap<String, JsonObject> businessIdMap;
+	TreeMap<String, String> businessNameMap;
 	
 	/**
 	 * Constructor. Create an empty YelpStore.
@@ -29,6 +32,9 @@ public class YelpStore {
 		userArray = new JsonArray();
 		reviewArray = new JsonArray();
 		pattern = "yyyy-MM-dd";
+
+		businessIdMap = new HashMap<>();
+		businessNameMap = new TreeMap<>();
 	}
 
 	/**
@@ -81,16 +87,25 @@ public class YelpStore {
 	 * @return true if successful.
 	 */
 	public boolean addBusiness(String businessId, String name, String city, String state, double lat, double lon) {
-		JsonObject newReview = new JsonObject();
-		newReview.addProperty("businessId", businessId);
-		newReview.addProperty("name", name);
-		newReview.addProperty("city", city);
-		newReview.addProperty("state", state);
-		newReview.addProperty("lat", lat);
-		newReview.addProperty("lon", lon);
+		JsonObject newBusiness = new JsonObject();
+		newBusiness.addProperty("businessId", businessId);
+		newBusiness.addProperty("name", name);
+		newBusiness.addProperty("city", city);
+		newBusiness.addProperty("state", state);
+		newBusiness.addProperty("lat", lat);
+		newBusiness.addProperty("lon", lon);
 
-		businessArray.add(newReview);
-		return true;
+
+		// check duplicate
+		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+			businessArray.add(newBusiness);
+			businessIdMap.put(businessId, newBusiness);
+			businessNameMap.put(name, businessId);
+			return true;
+		} else {
+			System.out.println("duplicate business ID or name");
+			return false;
+		}
 	}
 
 	/**
@@ -106,17 +121,25 @@ public class YelpStore {
 	 */
 	public boolean addBusiness(String businessId, String name, String city, String state, double lat, double lon, JsonArray neighborhoods) {
 
-		JsonObject newReview = new JsonObject();
-		newReview.addProperty("businessId", businessId);
-		newReview.addProperty("name", name);
-		newReview.addProperty("city", city);
-		newReview.addProperty("state", state);
-		newReview.addProperty("lat", lat);
-		newReview.addProperty("lon", lon);
-		newReview.add("neighborhoods", neighborhoods);
+		JsonObject newBusiness = new JsonObject();
+		newBusiness.addProperty("businessId", businessId);
+		newBusiness.addProperty("name", name);
+		newBusiness.addProperty("city", city);
+		newBusiness.addProperty("state", state);
+		newBusiness.addProperty("lat", lat);
+		newBusiness.addProperty("lon", lon);
+		newBusiness.add("neighborhoods", neighborhoods);
 
-		businessArray.add(newReview);
-		return true;
+		// check duplicate
+		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+			businessArray.add(newBusiness);
+			businessIdMap.put(businessId, newBusiness);
+			businessNameMap.put(name, businessId);
+			return true;
+		} else {
+			System.out.println("duplicate business ID or name");
+			return false;
+		}
 	}
 
 	/**
@@ -131,24 +154,31 @@ public class YelpStore {
 	 * @return true if successful.
 	 */
 	public boolean addBusiness(String businessId, String name, String city, String state, double lat, double lon, String neighborhoods) {
-		JsonObject newReview = new JsonObject();
-		newReview.addProperty("businessId", businessId);
-		newReview.addProperty("name", name);
-		newReview.addProperty("city", city);
-		newReview.addProperty("state", state);
-		newReview.addProperty("lat", lat);
-		newReview.addProperty("lon", lon);
+		JsonObject newBusiness = new JsonObject();
+		newBusiness.addProperty("businessId", businessId);
+		newBusiness.addProperty("name", name);
+		newBusiness.addProperty("city", city);
+		newBusiness.addProperty("state", state);
+		newBusiness.addProperty("lat", lat);
+		newBusiness.addProperty("lon", lon);
 		// parse neighborhoods string
 		String[] temp = neighborhoods.split(",");
 		JsonArray neighborhoodsArray = new JsonArray();
 		for(int i = 0; i < temp.length; i++) {
 			neighborhoodsArray.add(temp[i]);
 		}
-		newReview.add("neighborhoods", neighborhoodsArray);
+		newBusiness.add("neighborhoods", neighborhoodsArray);
 
-		businessArray.add(newReview);
-		return true;
-
+		// check duplicate
+		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+			businessArray.add(newBusiness);
+			businessIdMap.put(businessId, newBusiness);
+			businessNameMap.put(name, businessId);
+			return true;
+		} else {
+			System.out.println("duplicate business ID or name");
+			return false;
+		}
 	}
 
 
@@ -195,7 +225,7 @@ public class YelpStore {
 
 	// An ArrayList representation of business, sorted alphabetically
 	private ArrayList<JsonObject> sortBusinessArray(){
-		ArrayList<JsonObject> sortedBusinessArray = new ArrayList<JsonObject>();
+		ArrayList<JsonObject> sortedBusinessArray = new ArrayList<>();
 		for (int i = 0; i < businessArray.size(); i++) {
 			sortedBusinessArray.add(businessArray.get(i).getAsJsonObject());
 		}
@@ -214,11 +244,29 @@ public class YelpStore {
 
 	// It might be better to use a map?
 	private HashMap<String, ArrayList> reviewMap(){
+		HashMap <String, ArrayList> reviewMap = new HashMap<>();
+
+		String currentBusinessId = ((JsonObject)reviewArray.get(0)).get("businessId").getAsString();
+		ArrayList<String> userReview = new ArrayList<>();
+		for (int i = 0; i < reviewArray.size(); i++){
+			String newBusinessId = ((JsonObject)reviewArray.get(i)).get("businessId").getAsString();
+			if (currentBusinessId.equals(newBusinessId)){
+				// add new record into arraylist
+				String user = ((JsonObject)reviewArray.get(i)).get("user").getAsString();;
+//				if (userArray.contains())
+
+				String review = ((JsonObject)reviewArray.get(i)).get("review").getAsString();
+			} else {
+				currentBusinessId = newBusinessId;
+
+			}
+		}
 
 		return null;
 	}
 
 	// comparator to sore business alphabetically
+	// useless, just use treemap to store business name
 	class BusinessComparator implements Comparator<JsonObject>{
 		public int compare(JsonObject business1, JsonObject business2){
 			String name1 = "";
