@@ -23,6 +23,8 @@ public class YelpStore {
 
 	HashMap<String, JsonObject> businessIdMap;
 	TreeMap<String, String> businessNameMap;
+	HashMap<String, String> userIdMap;
+	HashMap<String, TreeSet> reviewMap;
 	
 	/**
 	 * Constructor. Create an empty YelpStore.
@@ -35,6 +37,8 @@ public class YelpStore {
 
 		businessIdMap = new HashMap<>();
 		businessNameMap = new TreeMap<>();
+		userIdMap = new HashMap<>();
+		reviewMap = new HashMap<>();
 	}
 
 	/**
@@ -73,6 +77,16 @@ public class YelpStore {
 		newReview.addProperty("userId", userId);
 
 		reviewArray.add(newReview);
+
+		if (reviewMap.containsKey(businessId)){
+			TreeSet temp = reviewMap.get(businessId);
+			temp.add(newReview);
+			reviewMap.put(businessId, temp);
+		} else {
+			TreeSet<JsonObject> newSet = new TreeSet<>(new ReviewComparator());
+			newSet.add(newReview);
+			reviewMap.put(businessId, newSet);
+		}
 		return true;
 	}
 
@@ -192,8 +206,16 @@ public class YelpStore {
 		JsonObject newUser = new JsonObject();
 		newUser.addProperty("userId", userId);
 		newUser.addProperty("name", name);
-		userArray.add(newUser);
-		return true;
+
+		// check duplicate
+		if (!userIdMap.containsKey(userId)){
+			userArray.add(newUser);
+			userIdMap.put(userId, name);
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	/**
@@ -213,90 +235,52 @@ public class YelpStore {
 	 */
 	public String toString() {
 		// Sort deepcopy of our array as needed
-		ArrayList<JsonObject> sortedBusinessArray = sortBusinessArray();
-		ArrayList<JsonObject> sortedReviewArray = sortReviewArray();
-
-
-
-		int businessIndex = 0;
-		int reviewIndex = 0;
-		return null;
-	}
-
-	// An ArrayList representation of business, sorted alphabetically
-	private ArrayList<JsonObject> sortBusinessArray(){
-		ArrayList<JsonObject> sortedBusinessArray = new ArrayList<>();
-		for (int i = 0; i < businessArray.size(); i++) {
-			sortedBusinessArray.add(businessArray.get(i).getAsJsonObject());
+//		ArrayList<JsonObject> sortedBusinessArray = sortBusinessArray();
+//		ArrayList<JsonObject> sortedReviewArray = sortReviewArray();
+		Iterator it = businessNameMap.keySet().iterator();
+		StringBuffer buffer = new StringBuffer();
+		while (it.hasNext()){
+			String businessName = (String) it.next();
+			String businessId = businessNameMap.get(businessName);
+			buffer.append(businessToString(businessId));
+			buffer.append(reviewToString(businessId));
 		}
-		Collections.sort(sortedBusinessArray, new BusinessComparator());
-		return sortedBusinessArray;
+		return buffer.toString();
 	}
 
-	private ArrayList<JsonObject> sortReviewArray(){
-		ArrayList<JsonObject> sortedReviewArray = new ArrayList<JsonObject>();
-		for (int i = 0; i < reviewArray.size(); i++) {
-			sortedReviewArray.add(reviewArray.get(i).getAsJsonObject());
-		}
-		Collections.sort(sortedReviewArray, new ReviewComparator());
-		return sortedReviewArray;
+	private String reviewToString(String businessId){
+
+		return "\n";
 	}
 
-	// It might be better to use a map?
-	private HashMap<String, ArrayList> reviewMap(){
-		HashMap <String, ArrayList> reviewMap = new HashMap<>();
+	private String businessToString(String businessId){
+		JsonObject business = businessIdMap.get(businessId);
+		String name = business.get("name").getAsString();
+		String city = business.get("city").getAsString();
+		String state = business.get("state").getAsString();
+		String lat = business.get("lat").getAsString();
+		String lon = business.get("lon").getAsString();
+		String neighborhoods = "";
 
-		String currentBusinessId = ((JsonObject)reviewArray.get(0)).get("businessId").getAsString();
-		ArrayList<String> userReview = new ArrayList<>();
-		for (int i = 0; i < reviewArray.size(); i++){
-			String newBusinessId = ((JsonObject)reviewArray.get(i)).get("businessId").getAsString();
-			if (currentBusinessId.equals(newBusinessId)){
-				// add new record into arraylist
-				String user = ((JsonObject)reviewArray.get(i)).get("user").getAsString();;
-//				if (userArray.contains())
-
-				String review = ((JsonObject)reviewArray.get(i)).get("review").getAsString();
+		if (business.has("neighborhoods")){
+			JsonArray neighborArray = business.get("neighborhoods").getAsJsonArray();
+			if (neighborArray.size() == 1){
+				neighborhoods = neighborArray.get(0).getAsString();
 			} else {
-				currentBusinessId = newBusinessId;
-
+				for (int i = 0; i < neighborArray.size() - 1; i++){
+					neighborhoods += (neighborArray.get(0).getAsString() + ", ");
+				}
+				neighborhoods += neighborArray.get(neighborArray.size() - 1).getAsString();
 			}
-		}
 
-		return null;
+		}
+		return name + " - " + city + ", " + state + " (" + lat + ", " + lon + ") (" + neighborhoods + ")\n";
 	}
 
-	// comparator to sore business alphabetically
-	// useless, just use treemap to store business name
-	class BusinessComparator implements Comparator<JsonObject>{
-		public int compare(JsonObject business1, JsonObject business2){
-			String name1 = "";
-			String name2 = "";
-			try {
-				name1 = business1.getAsJsonPrimitive("businessId").getAsString();
-				name2 = business2.getAsJsonPrimitive("businessId").getAsString();
-			} catch (JsonIOException e){
-
-			}
-			return name1.compareTo(name2);
-		}
-	}
+	
 
 	class ReviewComparator implements Comparator<JsonObject>{
 		public int compare(JsonObject review1, JsonObject review2){
-			String name1 = "";
-			String name2 = "";
-			try {
-				name1 = review1.getAsJsonPrimitive("businessId").getAsString();
-				name2 = review2.getAsJsonPrimitive("businessId").getAsString();
-			} catch (JsonIOException e){
-				System.out.println(e);
-				return 0;
-			}
-
-			if (!name1.equals(name2)){
-				return name1.compareTo(name2);
-			}
-
 			String date1 = "";
 			String date2 = "";
 			try {
