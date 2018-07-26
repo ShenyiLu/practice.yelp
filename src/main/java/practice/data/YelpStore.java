@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.*;
 
 /**
  * Data structure to store information about businesses, users, and reviews.
@@ -22,7 +23,8 @@ public class YelpStore {
 	String pattern;
 
 	HashMap<String, JsonObject> businessIdMap;
-	TreeMap<String, String> businessNameMap;
+	TreeSet<NameObject> businessNameSet;
+//	TreeMap<String, String> businessNameMap;
 	HashMap<String, String> userIdMap;
 	HashMap<String, TreeSet> reviewMap;
 	
@@ -36,10 +38,13 @@ public class YelpStore {
 		pattern = "yyyy-MM-dd";
 
 		businessIdMap = new HashMap<>();
-		businessNameMap = new TreeMap<>();
+		businessNameSet = new TreeSet<>(new NameObjectComparator());
+//		businessNameMap = new TreeMap<>();
 		userIdMap = new HashMap<>();
 		reviewMap = new HashMap<>();
 	}
+
+
 
 	/**
 	 * Add a new review.
@@ -87,6 +92,7 @@ public class YelpStore {
 			newSet.add(newReview);
 			reviewMap.put(businessId, newSet);
 		}
+		System.out.println("add review's business Id: " + businessId);
 		return true;
 	}
 
@@ -111,13 +117,16 @@ public class YelpStore {
 
 
 		// check duplicate
-		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+//		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+		if (!businessIdMap.containsKey(businessId)){
 			businessArray.add(newBusiness);
 			businessIdMap.put(businessId, newBusiness);
-			businessNameMap.put(name, businessId);
+			businessNameSet.add(new NameObject(name, businessId));
+//			businessNameMap.put(name, businessId);
+			System.out.println("add new business's business Id: " + businessId);
 			return true;
 		} else {
-			System.out.println("duplicate business ID or name");
+			System.out.println("duplicate business ID");
 			return false;
 		}
 	}
@@ -145,13 +154,16 @@ public class YelpStore {
 		newBusiness.add("neighborhoods", neighborhoods);
 
 		// check duplicate
-		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+//		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+		if (!businessIdMap.containsKey(businessId)){
 			businessArray.add(newBusiness);
 			businessIdMap.put(businessId, newBusiness);
-			businessNameMap.put(name, businessId);
+			businessNameSet.add(new NameObject(name, businessId));
+//			businessNameMap.put(name, businessId);
+			System.out.println("add new business's business Id: " + businessId);
 			return true;
 		} else {
-			System.out.println("duplicate business ID or name");
+			System.out.println("duplicate business ID");
 			return false;
 		}
 	}
@@ -184,13 +196,16 @@ public class YelpStore {
 		newBusiness.add("neighborhoods", neighborhoodsArray);
 
 		// check duplicate
-		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+//		if (!businessIdMap.containsKey(businessId) && !businessNameMap.containsKey(name)){
+		if (!businessIdMap.containsKey(businessId)){
 			businessArray.add(newBusiness);
 			businessIdMap.put(businessId, newBusiness);
-			businessNameMap.put(name, businessId);
+			businessNameSet.add(new NameObject(name, businessId));
+//			businessNameMap.put(name, businessId);
+			System.out.println("add new business's business Id: " + businessId);
 			return true;
 		} else {
-			System.out.println("duplicate business ID or name");
+			System.out.println("duplicate business ID");
 			return false;
 		}
 	}
@@ -234,25 +249,26 @@ public class YelpStore {
 	 * @return string representation of the data store
 	 */
 	public String toString() {
-		// Sort deepcopy of our array as needed
-//		ArrayList<JsonObject> sortedBusinessArray = sortBusinessArray();
-//		ArrayList<JsonObject> sortedReviewArray = sortReviewArray();
-		Iterator it = businessNameMap.keySet().iterator();
+//		Iterator it = businessNameMap.keySet().iterator();
+		Iterator it = businessNameSet.iterator();
+
 		StringBuffer buffer = new StringBuffer();
 		while (it.hasNext()){
-			String businessName = (String) it.next();
-			String businessId = businessNameMap.get(businessName);
+			NameObject temp = (NameObject) it.next();
+			// no need to get name here?
+//			String businessName = temp.getName();
+			String businessId = temp.getBusinessId();
 			buffer.append(businessToString(businessId));
 			buffer.append(reviewToString(businessId));
 		}
 		return buffer.toString();
 	}
 
-	private String reviewToString(String businessId){
-
-		return "\n";
-	}
-
+	/**
+	 * toString method for a business.
+	 * @param businessId
+	 * @return
+	 */
 	private String businessToString(String businessId){
 		JsonObject business = businessIdMap.get(businessId);
 		String name = business.get("name").getAsString();
@@ -277,8 +293,71 @@ public class YelpStore {
 		return name + " - " + city + ", " + state + " (" + lat + ", " + lon + ") (" + neighborhoods + ")\n";
 	}
 
-	
+	/**
+	 * toString method for an array of reviews.
+	 * @param businessId
+	 * @return
+	 */
+	private String reviewToString(String businessId){
+		StringBuffer buffer = new StringBuffer();
 
+		if (!reviewMap.containsKey(businessId)){
+			System.out.println("No businessId in review: " + businessId);
+			return "";
+		}
+
+		TreeSet reviewSet = reviewMap.get(businessId);
+		Iterator it = reviewSet.iterator();
+		String currentReview;
+		while (it.hasNext()){
+			JsonObject review = (JsonObject) it.next();
+			currentReview = review.get("rating").getAsString();
+			currentReview += " - ";
+			String userId = review.get("userId").getAsString();
+			if(userIdMap.containsKey(userId)){
+				currentReview += userIdMap.get(userId);
+			} else {
+				currentReview += "";
+			}
+			currentReview += ": " + review.get("review").getAsString() + "\n";
+			buffer.append(currentReview);
+		}
+
+		return buffer.toString();
+	}
+
+	/**
+	 * store a pair of business Id and name
+	 */
+	class NameObject{
+		private String name;
+		private String businessId;
+		NameObject(String name, String businessId){
+			this.name = name;
+			this.businessId = businessId;
+		}
+
+		String getName(){
+			return name;
+		}
+
+		String getBusinessId(){
+			return businessId;
+		}
+	}
+
+	/**
+	 * compare NameObject, which compares business name
+	 */
+	class NameObjectComparator implements Comparator<NameObject>{
+		public int compare(NameObject name1, NameObject name2){
+			return name1.getName().compareTo(name2.getName());
+		}
+	}
+
+	/**
+	 * comparator to sort review objects by date.
+	 */
 	class ReviewComparator implements Comparator<JsonObject>{
 		public int compare(JsonObject review1, JsonObject review2){
 			String date1 = "";
@@ -311,7 +390,18 @@ public class YelpStore {
 	 * @param fname - path specifying where to save the output.
 	 */
 	public void printToFile(Path fname) {
-		//REPLACE WITH YOUR CODE.
+		// got Path output method from here
+		// https://stackoverflow.com/questions/6998905/java-bufferedwriter-object-with-utf-8
+		File file = fname.toFile();
+		try {
+			BufferedWriter out = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+			out.write(toString());
+			out.flush();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
 	}
 
 } 
