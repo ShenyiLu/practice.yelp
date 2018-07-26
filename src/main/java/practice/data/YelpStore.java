@@ -92,7 +92,7 @@ public class YelpStore {
 			newSet.add(newReview);
 			reviewMap.put(businessId, newSet);
 		}
-		System.out.println("add review's business Id: " + businessId);
+//		System.out.println("add review's business Id: " + businessId);
 		return true;
 	}
 
@@ -123,7 +123,7 @@ public class YelpStore {
 			businessIdMap.put(businessId, newBusiness);
 			businessNameSet.add(new NameObject(name, businessId));
 //			businessNameMap.put(name, businessId);
-			System.out.println("add new business's business Id: " + businessId);
+//			System.out.println("add new business's business Id: " + businessId + " set size: " + businessNameSet.size());
 			return true;
 		} else {
 			System.out.println("duplicate business ID");
@@ -160,7 +160,7 @@ public class YelpStore {
 			businessIdMap.put(businessId, newBusiness);
 			businessNameSet.add(new NameObject(name, businessId));
 //			businessNameMap.put(name, businessId);
-			System.out.println("add new business's business Id: " + businessId);
+//			System.out.println("add new business's business Id: " + businessId + " set size: " + businessNameSet.size());
 			return true;
 		} else {
 			System.out.println("duplicate business ID");
@@ -202,7 +202,7 @@ public class YelpStore {
 			businessIdMap.put(businessId, newBusiness);
 			businessNameSet.add(new NameObject(name, businessId));
 //			businessNameMap.put(name, businessId);
-			System.out.println("add new business's business Id: " + businessId);
+//			System.out.println("add new business's business Id: " + businessId + " set size: " + businessNameSet.size());
 			return true;
 		} else {
 			System.out.println("duplicate business ID");
@@ -260,6 +260,7 @@ public class YelpStore {
 			String businessId = temp.getBusinessId();
 			buffer.append(businessToString(businessId));
 			buffer.append(reviewToString(businessId));
+			buffer.append("\n");
 		}
 		return buffer.toString();
 	}
@@ -351,7 +352,13 @@ public class YelpStore {
 	 */
 	class NameObjectComparator implements Comparator<NameObject>{
 		public int compare(NameObject name1, NameObject name2){
-			return name1.getName().compareTo(name2.getName());
+			if (!name1.getName().equals(name2.getName())){
+				return name1.getName().compareTo(name2.getName());
+			}
+//			return name1.getBusinessId().compareTo(name2.getBusinessId());
+			// based on which element came in first
+			return 1;
+
 		}
 	}
 
