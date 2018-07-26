@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3988b3f-9a48-4ad8-8e7a-579475f791a7" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/practice/data/YelpDriver.java" afterPath="$PROJECT_DIR$/src/main/java/practice/data/YelpDriver.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/practice/data/YelpStore.java" afterPath="$PROJECT_DIR$/src/main/java/practice/data/YelpStore.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -14,17 +15,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="YelpStore.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="YelpStore.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/practice/data/YelpStore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="193" column="44" lean-forward="true" selection-start-line="193" selection-start-column="44" selection-end-line="193" selection-end-column="44" />
+            <state relative-caret-position="277">
+              <caret line="298" column="54" lean-forward="false" selection-start-line="298" selection-start-column="54" selection-end-line="298" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#11168#11169#0" expanded="true" />
-                <element signature="e#11188#11189#0" expanded="true" />
-                <element signature="e#11215#11216#0" expanded="true" />
-                <element signature="e#11241#11242#0" expanded="true" />
+                <element signature="e#11388#11389#0" expanded="true" />
+                <element signature="e#11408#11409#0" expanded="true" />
+                <element signature="e#11435#11436#0" expanded="true" />
+                <element signature="e#11461#11462#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -33,18 +34,20 @@
       <file leaf-file-name="YelpDriver.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/practice/data/YelpDriver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="43" lean-forward="false" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
-              <folding />
+            <state relative-caret-position="297">
+              <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleYelpStoreTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SimpleYelpStoreTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/practice/SimpleYelpStoreTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1046">
-              <caret line="110" column="78" lean-forward="false" selection-start-line="102" selection-start-column="8" selection-end-line="110" selection-end-column="78" />
+            <state relative-caret-position="292">
+              <caret line="175" column="43" lean-forward="false" selection-start-line="175" selection-start-column="35" selection-end-line="175" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -378,9 +381,9 @@
     <recent_temporary>
       <list size="4">
         <item index="0" class="java.lang.String" itemvalue="JUnit.SimpleYelpStoreTest.testShortReviewsOnly" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.SimpleYelpStoreTest" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.SimpleYelpStoreTest.testTwoBusinessesSameName" />
-        <item index="3" class="java.lang.String" itemvalue="Application.YelpDriver" />
+        <item index="1" class="java.lang.String" itemvalue="Application.YelpDriver" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.SimpleYelpStoreTest" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.SimpleYelpStoreTest.testTwoBusinessesSameName" />
       </list>
     </recent_temporary>
   </component>
@@ -401,18 +404,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="SimpleYelpStoreTest - 2018.07.26 at 14h 28m 46s.xml">
-      <configuration name="SimpleYelpStoreTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SimpleYelpStoreTest - 2018.07.26 at 14h 32m 33s.xml">
-      <configuration name="SimpleYelpStoreTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SimpleYelpStoreTest - 2018.07.26 at 14h 55m 34s.xml">
-      <configuration name="SimpleYelpStoreTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SimpleYelpStoreTest - 2018.07.26 at 15h 28m 48s.xml">
-      <configuration name="SimpleYelpStoreTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="SimpleYelpStoreTest - 2018.07.26 at 15h 31m 43s.xml">
       <configuration name="SimpleYelpStoreTest" configurationId="JUnit" />
     </history-entry>
@@ -423,6 +414,18 @@
       <configuration name="SimpleYelpStoreTest.testShortReviewsOnly" configurationId="JUnit" />
     </history-entry>
     <history-entry file="SimpleYelpStoreTest_testShortReviewsOnly - 2018.07.26 at 15h 42m 52s.xml">
+      <configuration name="SimpleYelpStoreTest.testShortReviewsOnly" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SimpleYelpStoreTest_testShortReviewsOnly - 2018.07.26 at 16h 05m 26s.xml">
+      <configuration name="SimpleYelpStoreTest.testShortReviewsOnly" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SimpleYelpStoreTest_testShortReviewsOnly - 2018.07.26 at 16h 07m 28s.xml">
+      <configuration name="SimpleYelpStoreTest.testShortReviewsOnly" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SimpleYelpStoreTest_testShortReviewsOnly - 2018.07.26 at 16h 08m 05s.xml">
+      <configuration name="SimpleYelpStoreTest.testShortReviewsOnly" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SimpleYelpStoreTest_testShortReviewsOnly - 2018.07.26 at 16h 15m 20s.xml">
       <configuration name="SimpleYelpStoreTest.testShortReviewsOnly" configurationId="JUnit" />
     </history-entry>
     <history-entry file="SimpleYelpStoreTest_testTwoBusinessesSameName - 2018.07.26 at 15h 30m 37s.xml">
@@ -482,31 +485,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/practice/data/YelpDriver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="43" lean-forward="false" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/practice/data/YelpStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="193" column="44" lean-forward="true" selection-start-line="193" selection-start-column="44" selection-end-line="193" selection-end-column="44" />
+        <state relative-caret-position="297">
+          <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11168#11169#0" expanded="true" />
-            <element signature="e#11188#11189#0" expanded="true" />
-            <element signature="e#11215#11216#0" expanded="true" />
-            <element signature="e#11241#11242#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/practice/SimpleYelpStoreTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1046">
-          <caret line="110" column="78" lean-forward="false" selection-start-line="102" selection-start-column="8" selection-end-line="110" selection-end-column="78" />
+        <state relative-caret-position="292">
+          <caret line="175" column="43" lean-forward="false" selection-start-line="175" selection-start-column="35" selection-end-line="175" selection-end-column="43" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/practice/data/YelpStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="298" column="54" lean-forward="false" selection-start-line="298" selection-start-column="54" selection-end-line="298" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#11388#11389#0" expanded="true" />
+            <element signature="e#11408#11409#0" expanded="true" />
+            <element signature="e#11435#11436#0" expanded="true" />
+            <element signature="e#11461#11462#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

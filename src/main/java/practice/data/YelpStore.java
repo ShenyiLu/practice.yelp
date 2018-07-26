@@ -193,6 +193,7 @@ public class YelpStore {
 		for(int i = 0; i < temp.length; i++) {
 			neighborhoodsArray.add(temp[i]);
 		}
+
 		newBusiness.add("neighborhoods", neighborhoodsArray);
 
 		// check duplicate
@@ -287,12 +288,16 @@ public class YelpStore {
 				neighborhoods = neighborArray.get(0).getAsString();
 			} else {
 				for (int i = 0; i < neighborArray.size() - 1; i++){
-					neighborhoods += (neighborArray.get(i).getAsString() + ", ");
+					neighborhoods = neighborhoods + (neighborArray.get(i).getAsString() + ", ");
 				}
-				neighborhoods += neighborArray.get(neighborArray.size() - 1).getAsString();
+				neighborhoods = neighborhoods + neighborArray.get(neighborArray.size() - 1).getAsString();
 			}
 
 		}
+		System.out.println("neighbor: " + neighborhoods);
+		// line 460189 in dataset: "neighborhoods": ["West Campus", "University of Texas"]
+		// not my problem, expected result is mistaken
+
 		return name + " - " + city + ", " + state + " (" + lat + ", " + lon + ") (" + neighborhoods + ")\n";
 	}
 
@@ -305,7 +310,7 @@ public class YelpStore {
 		StringBuffer buffer = new StringBuffer();
 
 		if (!reviewMap.containsKey(businessId)){
-			System.out.println("No businessId in review: " + businessId);
+//			System.out.println("No businessId in review: " + businessId);
 			return "";
 		}
 
