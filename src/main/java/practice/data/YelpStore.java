@@ -281,11 +281,13 @@ public class YelpStore {
 
 		if (business.has("neighborhoods")){
 			JsonArray neighborArray = business.get("neighborhoods").getAsJsonArray();
-			if (neighborArray.size() == 1){
+			if (neighborArray.size() == 0){
+				neighborhoods = "";
+			} else if (neighborArray.size() == 1){
 				neighborhoods = neighborArray.get(0).getAsString();
 			} else {
 				for (int i = 0; i < neighborArray.size() - 1; i++){
-					neighborhoods += (neighborArray.get(0).getAsString() + ", ");
+					neighborhoods += (neighborArray.get(i).getAsString() + ", ");
 				}
 				neighborhoods += neighborArray.get(neighborArray.size() - 1).getAsString();
 			}
